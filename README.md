@@ -9,7 +9,7 @@ This README covers install, usage, options, and the combos you **shouldn’t** u
 ## What you get
 
 - **One-file script** with the GOS SVG embedded:
-  - `gos_wallpaper_chic_suite_monolithic.py`
+  - `gos_chic.py`
 - **FP mode** (default): accent at the fingerprint target (centered horizontally, **71.8%** from top), **~225%** scale, **gray center fill**; accent outline honors your **style** and **accent color**.
 - **Custom accent control**: set X/Y (screen %, not pixels) and size (relative to base tile).
 - **Weave + tessellate**: logos “touch” cleanly under rotation.
@@ -34,7 +34,7 @@ Works great at Pixel 9 Pro XL native res (**1344 × 2992**) and any other dimens
 
 ### 1) FP “just works” (default)
 ```bash
-python gos_wallpaper_chic_suite_monolithic.py \\
+python gos_chic.py \\
   --out fp_default.png
 ```
 - Accent: center X, **71.8%** from top
@@ -44,14 +44,14 @@ python gos_wallpaper_chic_suite_monolithic.py \\
 
 ### 2) FP, red glossmix, tessellated weave
 ```bash
-python gos_wallpaper_chic_suite_monolithic.py \\
+python gos_chic.py \\
   --out fp_red_glossmix_weave.png \\
   --style glossmix --accent_color red --weave
 ```
 
 ### 3) Custom placement (disables FP)
 ```bash
-python gos_wallpaper_chic_suite_monolithic.py \\
+python gos_chic.py \\
   --out custom_topright.png \\
   --fp_mode False \\
   --accent_x 0.75 --accent_y 0.15 --accent_scale 1.0 \\
@@ -141,21 +141,21 @@ Let’s save you some head-scratching:
 
 **Pixel-ready FP, gold gradient outline, woven tessellation**
 ```bash
-python gos_wallpaper_chic_suite_monolithic.py \\
+python gos_chic.py \\
   --out fp_gold_gradient_weave.png \\
   --style gradient --accent_color gold --weave
 ```
 
 **FP, red gloss outline, no weave (clean grid)**
 ```bash
-python gos_wallpaper_chic_suite_monolithic.py \\
+python gos_chic.py \\
   --out fp_red_gloss_clean.png \\
   --style glossmix --accent_color red
 ```
 
 **Custom accent top-right (75%, 15%), same size as tiles, woven**
 ```bash
-python gos_wallpaper_chic_suite_monolithic.py \\
+python gos_chic.py \\
   --out custom_topright_woven.png \\
   --fp_mode False \\
   --accent_x 0.75 --accent_y 0.15 --accent_scale 1.0 \\
@@ -179,16 +179,16 @@ python gos_wallpaper_chic_suite_monolithic.py \\
 
 ```
 / (repo root)
-├─ gos_wallpaper_chic_suite_monolithic.py   # the one-file script (SVG embedded)
+├─ gos_chic.py   # the one-file script (SVG embedded)
 ├─ README.md                                 # this file
 └─ samples/
-   ├─ fp_default.png
-   ├─ fp_red_glossmix_weave.png
-   └─ custom_topright_woven.png
+   ├─ xxx.png
+   ├─ yyy.png
+   └─ zzz.png
 ```
 
 ---
 
 ## License
 
-MIT is fine unless you prefer otherwise.
+MIT
