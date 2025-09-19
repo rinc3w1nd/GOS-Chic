@@ -9,11 +9,6 @@ GrapheneOS OLED Wallpaper Generator -- Chic Suite (Monolithic, embedded SVG)
 Dependencies:
   pip install pillow cairosvg
 """
-import argparse, os, math
-from collections import deque
-from PIL import Image, ImageFilter
-from PIL.Image import Resampling
-import cairosvg
 
 # ---------------------------- Embedded SVG ----------------------------
 EMBEDDED_SVG = r"""<svg height="253.82401" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" viewBox="0 0 2644.0798 2644" width="253.82401" xmlns="http://www.w3.org/2000/svg"><path d="m771.67168 798 381.00032-217c-7.0001-21-12.0001-43-12.0001-67 0-92 67.0001-168 155.0001-184v-330h64v330c88 16 155 92 155 184 0 24-5 46-13 67l382 217c14-16 31-30 50-42 80-46 180-26 237 42l286-165 32 56-286 165c31 84-2 180-82 226-18 10-36 17-55 21v442c19 4 37 11 55 21 80 46 113 142 82 226l286 165-32 56-286-165c-57 68-157 88-237 42-19-12-36-26-50-42-127 72-254 145-382 217 8 21 13 43 13 67 0 92-67 168-155 184v330h-64v-330c-88-16-155.0001-92-155.0001-184 0-24 5-46 12.0001-67l-381.00032-217c-14 16-31 30-50 42-80 46-180 26-237-42l-285.99999 165-32-56 285.99999-165c-31-84 2-180 82-226 18-10 36-17 55-21v-442c-19-4-37-11-55-21-80-46-113-142-82-226l-285.99999-165 32-56 285.99999 165c57-68 157-88 237-42 19 12 36 26 50 42zm1080.00032 992c-18-50-15-108 14-157 30-52 81-84 136-92v-438c-55-8-106-40-136-92-29-49-32-107-14-157l-382-218c-35 40-85 65-142 65s-107-25-142-65l-382.00032 218c18 50 15 108-14 157-30 52-81 84-136 92v438c55 8 106 40 136 92 29 49 32 107 14 157l382.00032 218c35-40 85-65 142-65s107 25 142 65z" fill="#000000" fill-rule="nonzero" transform="translate(0 .000102)"/></svg>"""
@@ -25,9 +20,40 @@ from PIL import Image, ImageFilter
 from PIL.Image import Resampling
 import cairosvg
 
-# ---------------------------- Embedded SVG stays above in existing file ----------------------------
+# ---------------------------- device helper ----------------------------
+def get_pixel_resolution(codename: str):
+    """Return (width, height) in portrait pixels for supported Pixel devices."""
+    resolutions = {
+        # Pixel 9 series
+        "tegu":    (1080, 2424),   # Pixel 9a
+        "comet":   (2076, 2152),   # Pixel 9 Pro Fold (inner)
+        "komodo":  (1344, 2992),   # Pixel 9 Pro XL
+        "caiman":  (1280, 2856),   # Pixel 9 Pro
+        "tokay":   (1080, 2424),   # Pixel 9
 
+        # Pixel 8 series
+        "akita":   (1080, 2400),   # Pixel 8a
+        "husky":   (1344, 2992),   # Pixel 8 Pro
+        "shiba":   (1080, 2400),   # Pixel 8
 
+        # Pixel Fold + Tablet
+        "felix":      (1840, 2208),   # Pixel Fold (inner)
+        "tangorpro":  (1600, 2560),   # Pixel Tablet
+
+        # Pixel 7 series
+        "lynx":    (1080, 2400),   # Pixel 7a
+        "cheetah": (1440, 3120),   # Pixel 7 Pro
+        "panther": (1080, 2400),   # Pixel 7
+
+        # Pixel 6 series
+        "bluejay": (1080, 2400),   # Pixel 6a
+        "raven":   (1440, 3120),   # Pixel 6 Pro
+        "oriole":  (1080, 2400),   # Pixel 6
+    }
+    c = codename.lower()
+    if c not in resolutions:
+        raise ValueError(f"Unknown Pixel codename: {codename}")
+    return resolutions[c]
 
 def render_svg_to_png(svg_path_or_embedded: str, png_path: str, size_px: int) -> None:
     if svg_path_or_embedded and svg_path_or_embedded != "__embedded__":
@@ -350,6 +376,7 @@ def main():
     parser.add_argument("--out", required=True, help="Output PNG path")
     parser.add_argument("--width", type=int, default=1344, help="Screen width (default 1344)")
     parser.add_argument("--height", type=int, default=2992, help="Screen height (default 2992)")
+    parser.add_argument("--device", type=str, help="Pixel codename (e.g. komodo, caiman, tokay). Overrides --width/--height.")
     parser.add_argument("--logo_px", type=int, default=200, help="Logo render size in px (default 200)")
     parser.add_argument("--spacing", type=float, default=1.6, help="Spacing multiplier (non-tessellated)")
     parser.add_argument("--style", choices=["gradient","glossmix","emboss"], default="gradient", help="Fill style")
@@ -374,6 +401,9 @@ def main():
     args = parser.parse_args()
 
     fp_rgb = tuple(int(args.fp_center_rgb.lstrip("#")[i:i+2], 16) for i in (0,2,4))
+    # Resolve device codename to resolution if provided
+    if args.device:
+        args.width, args.height = get_pixel_resolution(args.device)
 
     build_wallpaper(svg_path=args.svg, out_path=args.out,
                     screen_w=args.width, screen_h=args.height,
