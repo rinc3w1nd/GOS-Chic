@@ -91,6 +91,34 @@ This sets canvas to **1344×2992** for Pixel 9 Pro XL (`komodo`).
 
 ---
 
+
+---
+
+## Supported Device Codenames
+
+You can use `--device CODENAME` to auto-set width/height. Portrait resolutions:
+
+| Codename   | Device               | Resolution (px) |
+|------------|----------------------|-----------------|
+| tegu       | Pixel 9a             | 1080 × 2424     |
+| comet      | Pixel 9 Pro Fold     | 2076 × 2152     |
+| komodo     | Pixel 9 Pro XL       | 1344 × 2992     |
+| caiman     | Pixel 9 Pro          | 1280 × 2856     |
+| tokay      | Pixel 9              | 1080 × 2424     |
+| akita      | Pixel 8a             | 1080 × 2400     |
+| husky      | Pixel 8 Pro          | 1344 × 2992     |
+| shiba      | Pixel 8              | 1080 × 2400     |
+| felix      | Pixel Fold (inner)   | 1840 × 2208     |
+| tangorpro  | Pixel Tablet         | 1600 × 2560     |
+| lynx       | Pixel 7a             | 1080 × 2400     |
+| cheetah    | Pixel 7 Pro          | 1440 × 3120     |
+| panther    | Pixel 7              | 1080 × 2400     |
+| bluejay    | Pixel 6a             | 1080 × 2400     |
+| raven      | Pixel 6 Pro          | 1440 × 3120     |
+| oriole     | Pixel 6              | 1080 × 2400     |
+
+---
+
 ## License
 
 MIT
